@@ -13,4 +13,10 @@
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "19.09";
+
+  imports = [
+    ./machine/dell-xps.nix
+    # ./role/gnome.nix
+    ./user/corentin.nix
+  ];
 }
