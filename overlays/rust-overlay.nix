@@ -1,0 +1,1 @@
+/home/corentin/nixpkgs-mozilla/rust-overlay.nix
