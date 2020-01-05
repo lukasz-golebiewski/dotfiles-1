@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../programs/zsh
     ../programs/neovim
     ../programs/tmux
   ];
