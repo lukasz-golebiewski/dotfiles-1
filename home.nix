@@ -15,7 +15,7 @@
   home.stateVersion = "19.09";
 
   imports = [
-    ./machine/dell-xps.nix
+    ./machine/xain-dell-xps.nix
     # ./role/gnome.nix
     ./user/corentin.nix
   ];
