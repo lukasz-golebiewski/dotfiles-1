@@ -1,0 +1,44 @@
+# Populate LS_COLORS (this requires `dircolors`)
+eval $(dircolors)
+
+# Simplify navigation
+setopt auto_cd
+
+# ===============================
+# Completion
+# ===============================
+# Enable completion
+autoload compinit && compinit
+# Display a selection menu for completion
+zstyle ':completion:*' menu select
+# Colorful selection menu
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+# Case insensitive completion if there's no capitable letter
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+# A bunch of other fancy options from prezto
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
+# ===============================
+# History
+# ===============================
+# Share history file amongst all Zsh sessions, ignoring dupes
+setopt append_history share_history histignorealldups
+# See: https://unix.stackexchange.com/a/484527/45689
+# FIXME: we need the prezto CTRL+R menu...
+history-incremental-pattern-search-backward-from-line () {
+  zle history-incremental-pattern-search-backward $BUFFER
+}
+zle -N history-incremental-pattern-search-backward-from-line
+bindkey -M viins "^R" history-incremental-pattern-search-backward-from-line
+bindkey -M vicmd "^R" history-incremental-pattern-search-backward-from-line
+bindkey -M isearch "^R" history-incremental-pattern-search-backward

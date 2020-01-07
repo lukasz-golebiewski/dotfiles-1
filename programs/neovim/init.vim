@@ -1,59 +1,59 @@
 " TODO: steal ideas from this vimrc https://amix.dk/vim/vimrc.html
 
-filetype off                                    " required!
-
-call plug#begin('~/.config/nvim/plugged')
-
-Plug 'LnL7/vim-nix'
-Plug 'tpope/vim-dadbod'
-Plug 'mattn/vim-sqlfmt'
-Plug 'tpope/vim-fireplace'
-Plug 'venantius/vim-cljfmt'
-Plug 'venantius/vim-eastwood'
-Plug 'elixir-editors/vim-elixir'
-Plug 'cespare/vim-toml'
-" Plug 'Yggdroot/indentLine'
-Plug 'pangloss/vim-javascript'
-Plug 'mattn/emmet-vim'
-Plug 'mxw/vim-jsx'
-
-" Plug 'LnL7/vim-nix'
-" Plug 'rhysd/vim-rustpeg'
-" Plug 'chiedo/vim-case-convert'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tpope/vim-surround'
-Plug 'qpkorr/vim-bufkill'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'                 " show signs for unstaged changes
-Plug 'scrooloose/nerdtree'                    " file explorer
-" Plug 'vim-scripts/tcl.vim--smithfield-indent' " tcl plugin
-Plug 'joshdick/onedark.vim'                   " colorscheme
-" Plug 'klen/python-mode'
-" Plug 'klen/python-mode', {'branch': 'develop'} " python plugin. Using develop branch due to https://github.com/python-mode/python-mode/issues/783
-Plug 'little-dude/python-mode', {'branch': 'develop'}
-Plug 'tpope/vim-fugitive'                     " git wrapper
-Plug 'tpope/vim-unimpaired'
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-Plug 'rust-lang/rust.vim'
-Plug 'Glench/Vim-Jinja2-Syntax'               " Jinja2 syntax highlighting
-" Plug 'tpope/vim-abolish'
-Plug 'Valloric/YouCompleteMe'                 " completion
-Plug 'mileszs/ack.vim'                        " to use `rg` instead of `grep`
-Plug 'vim-scripts/syslog-syntax-file'
-" Plug 'chaoren/vim-wordmotion'
-
-" Plug 'AndrewRadev/splitjoin.vim'
-" Plug 'cstrahan/vim-capnp'                       
-Plug 'vim-syntastic/syntastic'
-Plug 'fatih/vim-go'
-" Plug 'rodjek/vim-puppet'
-" Plug 'lambdatoast/elm.vim'
-" Plug 'mhinz/vim-rfc'
-" Plug 'vim-scripts/rfc-syntax', { 'for': 'rfc' } " optional syntax highlighting for RFC files
-
-call plug#end()
+" filetype off                                    " required!
+"
+"call plug#begin(stdpath('data') . '/plugged')
+"
+"Plug 'LnL7/vim-nix'
+"Plug 'tpope/vim-dadbod'
+"Plug 'mattn/vim-sqlfmt'
+"Plug 'tpope/vim-fireplace'
+"Plug 'venantius/vim-cljfmt'
+"Plug 'venantius/vim-eastwood'
+"Plug 'elixir-editors/vim-elixir'
+"Plug 'cespare/vim-toml'
+"" Plug 'Yggdroot/indentLine'
+"Plug 'pangloss/vim-javascript'
+"Plug 'mattn/emmet-vim'
+"Plug 'mxw/vim-jsx'
+"
+"" Plug 'LnL7/vim-nix'
+"" Plug 'rhysd/vim-rustpeg'
+"" Plug 'chiedo/vim-case-convert'
+"Plug 'christoomey/vim-tmux-navigator'
+"Plug 'tpope/vim-surround'
+"Plug 'qpkorr/vim-bufkill'
+"Plug 'junegunn/fzf'
+"Plug 'junegunn/fzf.vim'
+"Plug 'vim-airline/vim-airline'
+"Plug 'airblade/vim-gitgutter'                 " show signs for unstaged changes
+"Plug 'scrooloose/nerdtree'                    " file explorer
+"" Plug 'vim-scripts/tcl.vim--smithfield-indent' " tcl plugin
+"Plug 'joshdick/onedark.vim'                   " colorscheme
+"" Plug 'klen/python-mode'
+"" Plug 'klen/python-mode', {'branch': 'develop'} " python plugin. Using develop branch due to https://github.com/python-mode/python-mode/issues/783
+"Plug 'little-dude/python-mode', {'branch': 'develop'}
+"Plug 'tpope/vim-fugitive'                     " git wrapper
+"Plug 'tpope/vim-unimpaired'
+"Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'rust-lang/rust.vim'
+"Plug 'Glench/Vim-Jinja2-Syntax'               " Jinja2 syntax highlighting
+"" Plug 'tpope/vim-abolish'
+"Plug 'Valloric/YouCompleteMe'                 " completion
+"Plug 'mileszs/ack.vim'                        " to use `rg` instead of `grep`
+"Plug 'vim-scripts/syslog-syntax-file'
+"" Plug 'chaoren/vim-wordmotion'
+"
+"" Plug 'AndrewRadev/splitjoin.vim'
+"" Plug 'cstrahan/vim-capnp'                       
+"Plug 'vim-syntastic/syntastic'
+"Plug 'fatih/vim-go'
+"" Plug 'rodjek/vim-puppet'
+"" Plug 'lambdatoast/elm.vim'
+"" Plug 'mhinz/vim-rfc'
+"" Plug 'vim-scripts/rfc-syntax', { 'for': 'rfc' } " optional syntax highlighting for RFC files
+"
+"call plug#end()
 
 " Tmux configuration
 " See http://unix.stackexchange.com/questions/29907/how-to-get-vim-to-work-with-tmux-properly
@@ -78,7 +78,10 @@ set number
 
 " Colors
 set background=dark
-colorscheme onedark
+" packadd! onedark.vim
+" colorscheme onedark
+colorscheme neodark
+
 " transparent background
 highlight Normal ctermbg=none
 " colors tabs
@@ -142,8 +145,6 @@ nmap <C-Down> ]e
 vmap <C-Up>   [egv
 vmap <C-Down> ]egv
 
-
-
 " jump to the last position when reopening a file
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
@@ -194,7 +195,7 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 " YCM
-let g:ycm_rust_src_path = '/home/corentih/.multirust/sources/rustc-nightly/src'
+" let g:ycm_rust_src_path = '/home/corentih/.multirust/sources/rustc-nightly/src'
 
 " requires powerline-fonts to be installed
 let g:airline_powerline_fonts = 1
