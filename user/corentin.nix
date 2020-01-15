@@ -5,6 +5,7 @@
     ../programs/zsh
     ../programs/neovim
     ../programs/tmux
+    ../programs/emacs
   ];
 
   fonts.fontconfig.enable = true;
