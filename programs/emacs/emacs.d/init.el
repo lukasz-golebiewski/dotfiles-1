@@ -42,6 +42,9 @@
 ;; Lockfiles unfortunately cause more pain than benefit
 (setq create-lockfiles nil)
 
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
 (use-package dockerfile-mode
   :config (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
@@ -191,7 +194,7 @@
    ;; - (:foreground "sienna") a maroon that is pretty warm but also quite ugly.
    '(clojure-keyword-face ((t (:foreground "seashell4" :slant italic))))))
 
-; we highlight the current line, but it's too pale with atom-one-dark so we override it here
+;; we highlight the current line, but it's too pale with atom-one-dark so we override it here
 (set-face-background hl-line-face "gray0")
 
 (use-package uniquify
@@ -349,14 +352,23 @@
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
-  ;; by default, the regexp used by ivy to starts with ^, which is
-  ;; annoying
   (setq ivy-initial-inputs-alist nil)
-  :bind
-  (("\C-s" . 'swiper)
-   ("M-x" . 'counsel-M-x)
-   ("C-x C-f" . 'counsel-find-file)
-   (:map minibuffer-local-map ("C-r" . 'counself-minibuffer-history))))
+  )
+
+(use-package counsel
+  :after ivy
+  :config
+  ;; by default, the regexp used by ivy starts with ^, which is
+  ;; annoying. See:
+  ;; https://emacs.stackexchange.com/a/38842/22105
+  (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) "")
+  (counsel-mode)
+  :bind ((:map minibuffer-local-map ("C-r" . 'counsel-minibuffer-history))))
+
+(use-package swiper
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
 
 ;; ;; take from https://github.com/lunaryorn/old-emacs-configuration/blob/master/init.el
 ;; (use-package flycheck-virtualenv        ; Setup Flycheck by virtualenv
