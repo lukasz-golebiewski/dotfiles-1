@@ -7,7 +7,14 @@
     ../programs/tmux
   ];
 
+  fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
+    # fonts
+    hack-font
+    iosevka
+    nerdfonts
+    # cli tools
     exa
     bat
     tokei

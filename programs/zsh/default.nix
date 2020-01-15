@@ -26,6 +26,15 @@
           sha256 = "02b25klkyyhpdbf2vwzzbrd8hnfjpckbpjy6532ir6jqp2n2ivpj";
         };
       }
+      { 
+        name = "zsh-autosuggestions";
+        src = pkgs.fetchFromGitHub {
+          owner = "zsh-users";
+          repo = "zsh-autosuggestions";
+          rev = "ae315ded4dba10685dbbafbfa2ff3c1aefeb490d";
+          sha256 = "0h52p2waggzfshvy1wvhj4hf06fmzd44bv6j18k3l9rcx6aixzn6";
+        };
+      }
     ];
     shellAliases = {
       # we don't want to alias cat to bat because sometimes we do need to use
