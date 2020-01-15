@@ -10,6 +10,8 @@ let
   });
 in {
   nixpkgs.overlays = [ emacs-overlay ];
+  # Treemacs requires python3
+  home.packages = [ pkgs.python3 ];
   services.emacs.enable = true;
   programs.emacs = {
     enable = true;
@@ -22,6 +24,7 @@ in {
         company-lsp
         rust-mode
         flycheck
+        flycheck-joker
         go-mode
         es-mode
         cider
@@ -65,7 +68,7 @@ in {
     "Emacs.menuBar" = false;
     "Emacs.toolBar" = false;
     "Emacs.verticalScrollBars" = false;
-    "Emacs.Font" = "-CYEL-Iosevka-normal-normal-normal-*-28-*-*-*-d-0-iso10646-1";
+    "Emacs.Font" = "-CYEL-Iosevka-normal-normal-normal-*-30-*-*-*-d-0-iso10646-1";
   };
 
   # Home manager's emacs service doesn't provide a desktop entry for the emacs

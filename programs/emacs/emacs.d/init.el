@@ -169,6 +169,7 @@
   :after treemacs magit)
 
 (use-package auto-dim-other-buffers
+  :commands auto-dim-other-buffers-mode
   :diminish auto-dim-other-buffers-mode
   :init (auto-dim-other-buffers-mode))
 
@@ -212,6 +213,7 @@
 ;; FIXME: RET should insert enough tabs to match the previous line's indentation
 
 (use-package company
+  :commands company-tng-configure-default
   :custom
   ;; delay to start completion
   (company-idle-delay 0)
@@ -231,6 +233,7 @@
 	      ("C-p" . #'company-select-previous)))
 
 (use-package projectile
+  :commands projectile-mode
   :init
   (projectile-mode +1)
   ;; :config
@@ -270,6 +273,7 @@
 ;;   :hook (lispy-mode . lispyville-mode))
 
 (use-package flycheck
+  :commands global-flycheck-mode
   :init
   ;; (setq flycheck-mode-globals '(not rust-mode))
   (global-flycheck-mode))
@@ -311,20 +315,21 @@
   ;; that, apply the workaround found at
   ;; https://github.com/venantius/ultra/issues/103#issuecomment-470470888
   (setenv "LEIN_USE_BOOTCLASSPATH" "no")
-  :config
-  ;; Skip :user section of ~/.lein/profiles.clj when using
-  ;; cider-jack-in. See https://github.com/venantius/ultra
-  (setq cider-lein-parameters "with-profile emacs repl :headless :host localhost")
-  ;; for clojurescript we use yarn, not node, so we have to tweak the
-  ;; command a little bit.
-  ;; FIXME: this is project specific, this should be a file-local
-  (setq cider-shadow-cljs-command "yarn shadow-cljs")
-  ;; by default, the shadow-cljs that cider run is `yarn shadow-cljs
-  ;; server` but we want to watch the app. FIXME: this is project
-  ;; specific so it should be set at the project level instead.
-  (setq cider-shadow-cljs-parameters "watch app")
-  ;; clojure stacktraces are huge, so make the *Messages* buffers bigger
-  (setq message-log-max 100000))
+  ;; :config
+  ;; ;; Skip :user section of ~/.lein/profiles.clj when using
+  ;; ;; cider-jack-in. See https://github.com/venantius/ultra
+  ;; (setq cider-lein-parameters "with-profile emacs repl :headless :host localhost")
+  ;; ;; for clojurescript we use yarn, not node, so we have to tweak the
+  ;; ;; command a little bit.
+  ;; ;; FIXME: this is project specific, this should be a file-local
+  ;; (setq cider-shadow-cljs-command "yarn shadow-cljs")
+  ;; ;; by default, the shadow-cljs that cider run is `yarn shadow-cljs
+  ;; ;; server` but we want to watch the app. FIXME: this is project
+  ;; ;; specific so it should be set at the project level instead.
+  ;; (setq cider-shadow-cljs-parameters "watch app")
+  ;; ;; clojure stacktraces are huge, so make the *Messages* buffers bigger
+  ;; (setq message-log-max 100000)
+  )
 
 (use-package flycheck-joker)
 
@@ -361,6 +366,7 @@
 ;;   :hook (python-mode . 'my-flycheck-virtualenv-setup))
 
 (use-package elpy
+  :commands elpy-enable
   ;; Only call `elpy-enable` when needed.
   ;; See: https://emacs.stackexchange.com/q/10065/22105
   :init (with-eval-after-load 'python (elpy-enable))
