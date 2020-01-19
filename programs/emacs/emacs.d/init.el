@@ -386,6 +386,7 @@
   ;; See: https://emacs.stackexchange.com/q/10065/22105
   :init (with-eval-after-load 'python (elpy-enable))
   :config
+  (setq elpy-rpc-virtualenv-path 'current)
   ;; by default, elpy uses flymake. This forces it to use flycheck instead
   ;; See:
   ;;     - https://github.com/jorgenschaefer/elpy/wiki/Customizations#use-flycheck-instead-of-flymake
