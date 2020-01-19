@@ -1,13 +1,13 @@
 { config, lib, pkgs, ... }:
 
-{
+rec {
   programs.zsh = {
     enable = true;
     # autocd = true;
     defaultKeymap = "emacs";
     dotDir = ".config/zsh";
-    plugins = [ 
-      { 
+    plugins = [
+      {
         name = "zsh-syntax-highlighting";
         src = pkgs.fetchFromGitHub {
           owner = "zsh-users";
@@ -16,7 +16,7 @@
           sha256 = "142c031fqkjjmcj9yg6n1026km6h19nmg2nfkjpwipnliimi92qv";
         };
       }
-      { 
+      {
         name = "powerlevel10k";
         file = "powerlevel10k.zsh-theme";
         src = pkgs.fetchFromGitHub {
@@ -26,7 +26,7 @@
           sha256 = "02b25klkyyhpdbf2vwzzbrd8hnfjpckbpjy6532ir6jqp2n2ivpj";
         };
       }
-      { 
+      {
         name = "zsh-autosuggestions";
         src = pkgs.fetchFromGitHub {
           owner = "zsh-users";
@@ -44,5 +44,12 @@
       ll = "ls -l";
     };
     initExtra = builtins.readFile ./zshrc;
+  };
+
+  home.file = {
+    "p10k.zsh" = {
+      target =  "${programs.zsh.dotDir}/p10k.zsh";
+      source  = ./p10k.zsh;
+    };
   };
 }
