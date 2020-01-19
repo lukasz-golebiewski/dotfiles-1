@@ -42,6 +42,9 @@
 ;; Lockfiles unfortunately cause more pain than benefit
 (setq create-lockfiles nil)
 
+(use-package direnv
+  :config (direnv-mode))
+
 (use-package nix-mode
   :mode "\\.nix\\'")
 

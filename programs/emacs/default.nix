@@ -17,6 +17,7 @@ in {
     enable = true;
     extraPackages = (epkgs:
       (with epkgs; [
+        direnv
         use-package
         use-package-chords
         magit

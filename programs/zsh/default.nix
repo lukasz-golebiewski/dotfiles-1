@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 rec {
+  home.packages = [ pkgs.direnv ];
+
   programs.zsh = {
     enable = true;
     # autocd = true;
