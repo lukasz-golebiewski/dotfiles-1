@@ -57,3 +57,13 @@ bindkey -M isearch "^R" history-incremental-pattern-search-backward
 # direnv
 # ===============================
 eval "$(direnv hook zsh)"
+
+# On MAC keyboard, Super and Alt are swapped which is very confusing.  This
+# function swaps them back. See: https://unix.stackexchange.com/a/226641/45689
+function fix_apple_keyboard() {
+    echo "swapping Alt and Super"
+    echo 1 | sudo tee /sys/module/hid_apple/parameters/swap_opt_cmd
+
+    echo "disabling fn keys"
+    echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode
+}
