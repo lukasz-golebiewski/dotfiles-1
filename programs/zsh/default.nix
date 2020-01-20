@@ -50,8 +50,8 @@ rec {
 
   home.file = {
     "p10k.zsh" = {
-      target =  "${programs.zsh.dotDir}/p10k.zsh";
-      source  = ./p10k.zsh;
+      target = "${programs.zsh.dotDir}/p10k.zsh";
+      source = ./p10k.zsh;
     };
   };
 }

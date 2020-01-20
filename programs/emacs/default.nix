@@ -72,7 +72,8 @@ in {
     "Emacs.menuBar" = false;
     "Emacs.toolBar" = false;
     "Emacs.verticalScrollBars" = false;
-    "Emacs.Font" = "-CYEL-Iosevka-normal-normal-normal-*-20-*-*-*-d-0-iso10646-1";
+    "Emacs.Font" =
+      "-CYEL-Iosevka-normal-normal-normal-*-20-*-*-*-d-0-iso10646-1";
   };
 
   # Home manager's emacs service doesn't provide a desktop entry for the emacs

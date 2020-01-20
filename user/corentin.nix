@@ -2,16 +2,12 @@
 
 let
   mozilla-overlays = fetchTarball {
-      url = https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz;
+    url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
 
 in {
-  imports = [
-    ../programs/zsh
-    ../programs/neovim
-    ../programs/tmux
-    ../programs/emacs
-  ];
+  imports =
+    [ ../programs/zsh ../programs/neovim ../programs/tmux ../programs/emacs ];
 
   # Make the mozilla overlays available to home-manager, because they
   # contain firefox nightly
@@ -41,6 +37,8 @@ in {
     tmux
     htop
     dfc
+    # code
+    nixfmt
   ];
 
   programs.git = {
