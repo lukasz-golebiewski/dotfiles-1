@@ -39,6 +39,9 @@
       kept-old-versions 2
       version-control t)       ; use versioned backups
 
+(use-package yaml-mode
+  :mode ("\\.ya?ml$" . yaml-mode))
+
 ;; Lockfiles unfortunately cause more pain than benefit
 (setq create-lockfiles nil)
 

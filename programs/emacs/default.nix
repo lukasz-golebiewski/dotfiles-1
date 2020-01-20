@@ -54,6 +54,7 @@ in {
         nix-mode
         counsel
         swiper
+        yaml-mode
       ]));
   };
 
