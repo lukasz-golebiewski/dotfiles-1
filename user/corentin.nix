@@ -39,6 +39,8 @@ in {
     dfc
     # code
     nixfmt
+    # other
+    calibre
   ];
 
   programs.git = {
