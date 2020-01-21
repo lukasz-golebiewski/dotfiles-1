@@ -43,7 +43,11 @@ rec {
       # the real `cat`
       c = "bat";
       ls = "exa";
-      ll = "ls -l";
+      ll = "exa -l";
+      la = "exa -a";
+      lla = "exa -al";
+      lal = "exa -al";
+      tree = "exa --tree --level=3";
     };
     initExtra = builtins.readFile ./zshrc;
   };
