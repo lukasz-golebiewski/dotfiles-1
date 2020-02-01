@@ -22,6 +22,9 @@ in {
 
   fonts.fontconfig.enable = true;
 
+  # Enhanced nix-shell
+  services.lorri.enable = true;
+
   home.packages = with pkgs; [
     latest.firefox-nightly-bin
     # fonts
