@@ -45,6 +45,8 @@ in {
     nixfmt
     # other
     calibre
+    discord
+    vlc
   ];
 
   programs.git = {
