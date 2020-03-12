@@ -51,7 +51,7 @@ in {
     tmux
     htop
     dfc
-    nixfmt
+    # nixfmt
     calibre
     discord
     vlc
