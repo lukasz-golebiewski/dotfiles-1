@@ -39,11 +39,10 @@ in {
   home.packages = with pkgs; [
     latest.firefox-nightly-bin
     gitAndTools.diff-so-fancy
-    # fonts
+    deluge
     hack-font
     iosevka
     nerdfonts
-    # cli tools
     exa
     bat
     tokei
@@ -52,12 +51,14 @@ in {
     tmux
     htop
     dfc
-    # code
     nixfmt
-    # other
     calibre
     discord
     vlc
+    filezilla
+    unzip
+    du-dust
+    # licensor
   ];
 
   programs.git = {
