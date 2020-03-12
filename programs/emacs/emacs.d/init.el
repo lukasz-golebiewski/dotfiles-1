@@ -254,18 +254,24 @@
         ("C-c p" . projectile-command-map)))
 
 (use-package lsp-mode
-  :hook
-  (rust-mode . lsp))
+  ;; :hook
+  ;;   (rust-mode . lsp)
+  :commands
+    lsp)
+
+(use-package lsp-ui :commands lsp-ui-mode)
 
 (use-package company-lsp
   :commands company-lsp
   :config (push 'company-lsp company-backends))
 
-(use-package rust-mode
-  :bind
-  (:map rust-mode-map
-        ("C-c C-c" . rust-compile)
-        ("C-c C-t" . rust-test)))
+;; (use-package rust-mode
+;;   :bind
+;;   (:map rust-mode-map
+;;         ("C-c C-c" . rust-compile)
+;;         ("C-c C-t" . rust-test)))
+
+(use-package rustic)
 
 ;; we keep our secrets in an encrypted file
 (setq auth-sources

@@ -23,7 +23,7 @@ in {
         magit
         company
         company-lsp
-        rust-mode
+        # rust-mode
         flycheck
         flycheck-joker
         go-mode
@@ -47,6 +47,8 @@ in {
         treemacs-icons-dired
         treemacs-magit
         lsp-mode
+        lsp-ui
+        rustic
         auto-dim-other-buffers
         atom-one-dark-theme
         command-log-mode

@@ -4,6 +4,9 @@ let
   mozilla-overlays = fetchTarball {
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
+  # rust-analyzer-overlay =  fetchGit {
+  #   url = "https://github.com/oxalica/rust-analyzer-overlay";
+  # };
 
 in {
   imports =
@@ -11,7 +14,10 @@ in {
 
   # Make the mozilla overlays available to home-manager, because they
   # contain firefox nightly
-  nixpkgs.overlays = [ (import "${mozilla-overlays}") ];
+  nixpkgs.overlays = [
+    (import "${mozilla-overlays}")
+    # (import "${rust-analyzer-overlay}")
+  ];
 
   # Also make the overlay permanent so that we can use the rust
   # overlays in our projects
@@ -19,6 +25,11 @@ in {
     source = "${mozilla-overlays}/rust-overlay.nix";
     target = "nixpkgs/overlays/rust-overlay.nix";
   };
+
+  # xdg.configFile."rust-analyzer-overlay.nix" = {
+  #   source = "${rust-analyzer-overlay}";
+  #   target = "nixpkgs/overlays/rust-analyzer-overlay";
+  # };
 
   fonts.fontconfig.enable = true;
 
