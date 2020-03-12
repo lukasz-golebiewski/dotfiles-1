@@ -16,6 +16,7 @@ in {
   # contain firefox nightly
   nixpkgs.overlays = [
     (import "${mozilla-overlays}")
+    (import ../overlays/personal-overlay)
     # (import "${rust-analyzer-overlay}")
   ];
 
@@ -59,6 +60,7 @@ in {
     unzip
     du-dust
     # licensor
+    robo-instructus
   ];
 
   programs.git = {
