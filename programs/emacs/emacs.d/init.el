@@ -265,13 +265,9 @@
   :commands company-lsp
   :config (push 'company-lsp company-backends))
 
-;; (use-package rust-mode
-;;   :bind
-;;   (:map rust-mode-map
-;;         ("C-c C-c" . rust-compile)
-;;         ("C-c C-t" . rust-test)))
-
-(use-package rustic)
+(use-package rustic
+  :config
+  (setq rustic-lsp-server 'rust-analyzer))
 
 ;; we keep our secrets in an encrypted file
 (setq auth-sources

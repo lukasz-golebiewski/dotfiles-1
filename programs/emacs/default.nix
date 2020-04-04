@@ -23,7 +23,6 @@ in {
         magit
         company
         company-lsp
-        # rust-mode
         flycheck
         flycheck-joker
         go-mode

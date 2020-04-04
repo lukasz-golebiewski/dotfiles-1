@@ -4,9 +4,13 @@ let
   mozilla-overlays = fetchTarball {
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
-  # rust-analyzer-overlay =  fetchGit {
-  #   url = "https://github.com/oxalica/rust-analyzer-overlay";
-  # };
+
+  nixpkgs_with_rust_analyzer = import (fetchGit {
+    name = "nixpkgs_with_rust_analyzer";
+    url = "https://github.com/oxalica/nixpkgs/";
+    ref = "rust-analyzer";
+    rev = "bde9289415bae0e62e67072e22f5666da4c3a9f5";
+  }) { };
 
 in {
   imports =
@@ -17,7 +21,6 @@ in {
   nixpkgs.overlays = [
     (import "${mozilla-overlays}")
     (import ../overlays/personal-overlay)
-    # (import "${rust-analyzer-overlay}")
   ];
 
   # Also make the overlay permanent so that we can use the rust
@@ -27,17 +30,13 @@ in {
     target = "nixpkgs/overlays/rust-overlay.nix";
   };
 
-  # xdg.configFile."rust-analyzer-overlay.nix" = {
-  #   source = "${rust-analyzer-overlay}";
-  #   target = "nixpkgs/overlays/rust-analyzer-overlay";
-  # };
-
   fonts.fontconfig.enable = true;
 
   # Enhanced nix-shell
   services.lorri.enable = true;
 
   home.packages = with pkgs; [
+    nixpkgs_with_rust_analyzer.rust-analyzer
     latest.firefox-nightly-bin
     gitAndTools.diff-so-fancy
     deluge
