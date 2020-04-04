@@ -18,10 +18,8 @@ in {
 
   # Make the mozilla overlays available to home-manager, because they
   # contain firefox nightly
-  nixpkgs.overlays = [
-    (import "${mozilla-overlays}")
-    (import ../overlays/personal-overlay)
-  ];
+  nixpkgs.overlays =
+    [ (import "${mozilla-overlays}") (import ../overlays/personal-overlay) ];
 
   # Also make the overlay permanent so that we can use the rust
   # overlays in our projects

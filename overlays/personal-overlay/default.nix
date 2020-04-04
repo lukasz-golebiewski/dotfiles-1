@@ -1,4 +1,1 @@
-self: super:
-{
-  robo-instructus = (import ./robo-instructus.nix);
-}
+self: super: { robo-instructus = (import ./robo-instructus.nix); }

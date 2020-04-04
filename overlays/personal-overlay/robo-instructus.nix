@@ -1,18 +1,21 @@
 # with import <nixpkgs> { config = { allowUnfree = true; }; };
-with import <nixpkgs> {}; with pkgs;
+with import <nixpkgs> { };
+with pkgs;
 stdenv.mkDerivation rec {
   name = "robo-instructus";
   version = "1.0";
-  buildInputs = [ pkgs.unzip 
-      alsaLib
-      glibc
-      xlibs.libxcb
-      xlibs.libX11
-      xlibs.libXcursor
-      xlibs.libXi
-      xlibs.libXrandr
-      libglvnd ];
-  src = ./robo-instructus-linux.zip ;
+  buildInputs = [
+    pkgs.unzip
+    alsaLib
+    glibc
+    xlibs.libxcb
+    xlibs.libX11
+    xlibs.libXcursor
+    xlibs.libXi
+    xlibs.libXrandr
+    libglvnd
+  ];
+  src = ./robo-instructus-linux.zip;
   sourceRoot = ".";
   dontConfigure = true;
   dontBuild = true;
