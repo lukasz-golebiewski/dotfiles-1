@@ -19,7 +19,7 @@
       vim-tmux-navigator
       vim-airline
       vim-unimpaired
-      youcompleteme
+      YouCompleteMe
       vim-surround
       vim-toml
       syntastic
