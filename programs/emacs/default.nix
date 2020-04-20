@@ -17,6 +17,8 @@ in {
     enable = true;
     extraPackages = (epkgs:
       (with epkgs; [
+        elixir-mode
+        alchemist
         direnv
         use-package
         use-package-chords
