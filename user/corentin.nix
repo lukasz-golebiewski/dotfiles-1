@@ -5,13 +5,6 @@ let
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
 
-  nixpkgs_with_rust_analyzer = import (fetchGit {
-    name = "nixpkgs_with_rust_analyzer";
-    url = "https://github.com/oxalica/nixpkgs/";
-    ref = "rust-analyzer";
-    rev = "bde9289415bae0e62e67072e22f5666da4c3a9f5";
-  }) { };
-
 in {
   imports =
     [ ../programs/zsh ../programs/neovim ../programs/tmux ../programs/emacs ];
@@ -34,7 +27,7 @@ in {
   services.lorri.enable = true;
 
   home.packages = with pkgs; [
-    nixpkgs_with_rust_analyzer.rust-analyzer
+    rust-analyzer
     latest.firefox-nightly-bin
     gitAndTools.diff-so-fancy
     deluge
