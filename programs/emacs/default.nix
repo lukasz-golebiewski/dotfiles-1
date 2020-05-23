@@ -26,10 +26,7 @@ in {
         company
         company-lsp
         flycheck
-        flycheck-joker
-        go-mode
         es-mode
-        cider
         forge
         ivy
         elpy

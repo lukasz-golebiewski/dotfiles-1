@@ -289,60 +289,9 @@
   ;; (setq flycheck-mode-globals '(not rust-mode))
   (global-flycheck-mode))
 
-(use-package go-mode
-  :config
-    (go-eldoc-setup)
-    (setq gofmt-command "goimports")
-    (setq compile-command "go test -v")
-    (let ((gopath (getenv "GOPATH"))
-          (golint-el "src/golang.org/x/lint/misc/emacs/golint.el"))
-      (add-to-list 'load-path (concat gopath "/" golint-el)))
-    (require 'golint)
-    (defun compile-bench ()
-      (interactive
-       (let ((cmd  "go test -v --bench . --benchmem"))
-         (compile cmd))))
-    (defun compile-test ()
-      (interactive
-       (let ((cmd  "go test -v"))
-         (compile cmd))))
-    (setq compilation-read-command nil) ; do not ask for confirmation for `compile-command`
-    :hook
-    ;; see https://emacs.stackexchange.com/questions/5452/before-save-hook-for-cc-mode
-    ((go-mode . (lambda () (add-hook 'before-save-hook 'gofmt-before-save nil 'local))))
-    :bind (:map go-mode-map
-                ("C-c C-c" . compile-test)
-                ("C-c C-b" . compile-bench)
-                ("C-c C-l" . golint)))
-
 (use-package es-mode
   :init (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
   :hook ((es-result-mode . hs-minor-mode)))
-
-(use-package cider
-  :init
-  ;; for some reason, some ultra code still get
-  ;; loaded and cider's repl fails to start. To avoid
-  ;; that, apply the workaround found at
-  ;; https://github.com/venantius/ultra/issues/103#issuecomment-470470888
-  (setenv "LEIN_USE_BOOTCLASSPATH" "no")
-  ;; :config
-  ;; ;; Skip :user section of ~/.lein/profiles.clj when using
-  ;; ;; cider-jack-in. See https://github.com/venantius/ultra
-  ;; (setq cider-lein-parameters "with-profile emacs repl :headless :host localhost")
-  ;; ;; for clojurescript we use yarn, not node, so we have to tweak the
-  ;; ;; command a little bit.
-  ;; ;; FIXME: this is project specific, this should be a file-local
-  ;; (setq cider-shadow-cljs-command "yarn shadow-cljs")
-  ;; ;; by default, the shadow-cljs that cider run is `yarn shadow-cljs
-  ;; ;; server` but we want to watch the app. FIXME: this is project
-  ;; ;; specific so it should be set at the project level instead.
-  ;; (setq cider-shadow-cljs-parameters "watch app")
-  ;; ;; clojure stacktraces are huge, so make the *Messages* buffers bigger
-  ;; (setq message-log-max 100000)
-  )
-
-(use-package flycheck-joker)
 
 (use-package magit
   :bind (("C-x g" . magit-status))
@@ -377,13 +326,6 @@
   :after ivy
   :bind (("C-s" . swiper)
          ("C-r" . swiper)))
-
-;; ;; take from https://github.com/lunaryorn/old-emacs-configuration/blob/master/init.el
-;; (use-package flycheck-virtualenv        ; Setup Flycheck by virtualenv
-;;   :load-path "lisp/"
-;;   :after python
-;;   :commands (my-flycheck-virtualenv-setup)
-;;   :hook (python-mode . 'my-flycheck-virtualenv-setup))
 
 (use-package elpy
   :commands elpy-enable
