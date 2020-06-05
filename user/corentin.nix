@@ -27,13 +27,12 @@ in {
   services.lorri.enable = true;
 
   home.packages = with pkgs; [
-    rust-analyzer
-    latest.firefox-nightly-bin
-    gitAndTools.diff-so-fancy
-    deluge
+    # fonts
     hack-font
     iosevka
     nerdfonts
+
+    # cli tools
     exa
     bat
     tokei
@@ -43,12 +42,38 @@ in {
     htop
     dfc
     nixfmt
+    unzip
+    exercism
+    socat
+    pciutils
+
+    # dev tools
+    shellcheck
+    cargo-license
+    cargo-tree
+    rust-analyzer
+    gitAndTools.diff-so-fancy
+    # tex and pandoc are always useful, for instance for converting
+    # markdown to pdf
+    texlive-combined-full
+    pandoc
+
+    # apps
     calibre
     discord
     vlc
     filezilla
-    unzip
+    latest.firefox-nightly-bin
+    deluge
     du-dust
+    dbeaver-ce
+    dia
+    google-chrome
+    libreoffice
+    skypeforlinux
+    teams
+    zoom-us
+
     # licensor
     robo-instructus
   ];
