@@ -55,7 +55,7 @@ in {
     gitAndTools.diff-so-fancy
     # tex and pandoc are always useful, for instance for converting
     # markdown to pdf
-    texlive-combined-full
+    # texlive.combined.scheme-full
     pandoc
 
     # apps
@@ -66,7 +66,7 @@ in {
     latest.firefox-nightly-bin
     deluge
     du-dust
-    dbeaver-ce
+    dbeaver
     dia
     google-chrome
     libreoffice
