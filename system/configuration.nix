@@ -29,9 +29,21 @@
     };
   };
 
-  boot.kernelParams =
-    [ "processor.max_cstate=4" "amd_iomu=soft" "idle=nomwait" ];
+  # acpi_call is necessart for tlp to work on Thinkpads
+  boot.kernelModules = [ "acpi_call" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Prevent the sound card from draining the battery:
+  # https://askubuntu.com/questions/229204/audio-codec-consuming-high-battery-power
+  # https://www.kernel.org/doc/html/latest/sound/designs/powersave.html
+  #
+  #     boot.extraModprobeConfig = "options snd_hda_intel power_save=1 power_save_controller=Y";
+  #
+  # Unfortunately extraModprobeConfig does not work properly so we use the
+  # kernel params instead. See: https://github.com/NixOS/nixpkgs/issues/20906
+  boot.kernelParams =
+    [ "snd_hda_intel.power_save=1" "snd_hda_intel.power_save_controller=Y" ];
 
   networking.hostName = "xain-laptop";
 
@@ -57,7 +69,14 @@
   environment.etc.currentconfig.source = ./.;
 
   # Just the bare minimum: we use home-manager for this
-  environment.systemPackages = with pkgs; [ neovim git ];
+  environment.systemPackages = with pkgs; [ neovim git tlp powertop ];
+
+  # power saving
+  services.tlp.enable = true;
+  # power usage monitoring
+  powerManagement.powertop.enable = true;
+
+  services.sshd.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
