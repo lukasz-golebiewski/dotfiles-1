@@ -18,7 +18,8 @@ in {
     extraPackages = (epkgs:
       (with epkgs; [
         elixir-mode
-        alchemist
+        # Alchemist is unmaintained unfortunately
+        # alchemist
         direnv
         use-package
         use-package-chords

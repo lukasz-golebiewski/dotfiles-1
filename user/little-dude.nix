@@ -4,8 +4,16 @@ let
   mozilla-overlays = fetchTarball {
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
+  # The whole nerdfonts package is > 2GB, and we only need two fonts.
+  nerdfonts = pkgs.nerdfonts.override { fonts = [ "Hack" "Iosevka" ]; };
 
 in {
+  home.username = "little-dude";
+  home.homeDirectory = "/home/little-dude";
+
+  # FIXME: remove this when possible. Currently, this is a dependency of sweethome3d
+  nixpkgs.config.permittedInsecurePackages = [ "p7zip-16.02" ];
+
   imports =
     [ ../programs/zsh ../programs/neovim ../programs/tmux ../programs/emacs ];
 
@@ -33,6 +41,8 @@ in {
     nerdfonts
 
     # cli tools
+    ripgrep
+    du-dust
     exa
     bat
     tokei
@@ -55,17 +65,16 @@ in {
     gitAndTools.diff-so-fancy
     # tex and pandoc are always useful, for instance for converting
     # markdown to pdf
-    # texlive.combined.scheme-full
+    texlive.combined.scheme-full
     pandoc
 
     # apps
-    calibre
+    # calibre
     discord
     vlc
     filezilla
     latest.firefox-nightly-bin
     deluge
-    du-dust
     dbeaver
     dia
     google-chrome
@@ -73,9 +82,10 @@ in {
     skypeforlinux
     teams
     zoom-us
+    sweethome3d.application
 
     # licensor
-    robo-instructus
+    # robo-instructus
   ];
 
   programs.git = {

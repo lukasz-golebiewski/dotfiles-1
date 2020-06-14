@@ -379,7 +379,5 @@
 (put 'downcase-region 'disabled nil)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package alchemist)
-
 (use-package vimrc-mode
   :init (add-to-list 'auto-mode-alist '("\\.vim\\(rc\\)?\\'" . vimrc-mode)))
