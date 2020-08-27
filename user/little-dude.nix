@@ -56,20 +56,23 @@ in {
     exercism
     socat
     pciutils
+    httpie
+    pgcli
+    cookiecutter
 
     # dev tools
     shellcheck
     cargo-license
-    cargo-tree
     rust-analyzer
     gitAndTools.diff-so-fancy
+    perl # needed for git diff???
     # tex and pandoc are always useful, for instance for converting
     # markdown to pdf
     texlive.combined.scheme-full
     pandoc
 
     # apps
-    # calibre
+    calibre
     discord
     vlc
     filezilla
@@ -83,6 +86,7 @@ in {
     teams
     zoom-us
     sweethome3d.application
+    evince
 
     # licensor
     # robo-instructus
