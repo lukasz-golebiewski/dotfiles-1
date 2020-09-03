@@ -18,8 +18,6 @@ in {
     extraPackages = (epkgs:
       (with epkgs; [
         elixir-mode
-        # Alchemist is unmaintained unfortunately
-        # alchemist
         direnv
         use-package
         use-package-chords
@@ -28,7 +26,6 @@ in {
         company-lsp
         flycheck
         es-mode
-        forge
         ivy
         elpy
         rg
