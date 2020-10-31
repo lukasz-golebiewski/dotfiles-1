@@ -64,8 +64,12 @@ in {
     httpie
     pgcli
     cookiecutter
+    wget
 
     # dev tools
+    binutils
+    strace
+    file
     shellcheck
     cargo-license
     rust-analyzer
@@ -77,6 +81,7 @@ in {
     pandoc
 
     # apps
+    pavucontrol
     calibre
     discord
     vlc
