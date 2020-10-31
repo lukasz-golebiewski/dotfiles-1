@@ -95,6 +95,10 @@
 (use-package treemacs-magit
   :after treemacs magit)
 
+;; (use-package lsp-treemacs
+;;   :after treemacs lsp-mode
+;;   :config (lsp-treemacs-sync-mode 1))
+
 (use-package auto-dim-other-buffers
   :commands auto-dim-other-buffers-mode
   :diminish auto-dim-other-buffers-mode

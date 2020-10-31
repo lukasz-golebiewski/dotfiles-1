@@ -1,1 +1,4 @@
-self: super: { robo-instructus = (import ./robo-instructus.nix); }
+self: super: {
+  elixir-ls = (import ./elixir-ls.nix);
+  robo-instructus = (import ./robo-instructus.nix);
+}

@@ -28,6 +28,11 @@ in {
     source = "${mozilla-overlays}/rust-overlay.nix";
     target = "nixpkgs/overlays/rust-overlay.nix";
   };
+  # The rust-src overlay contains rust-analyzer
+  xdg.configFile."rust-src-overlay.nix" = {
+    source = "${mozilla-overlays}/rust-src-overlay.nix";
+    target = "nixpkgs/overlays/rust-src-overlay.nix";
+  };
 
   fonts.fontconfig.enable = true;
 

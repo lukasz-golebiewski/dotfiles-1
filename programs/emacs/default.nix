@@ -11,7 +11,13 @@ let
 in {
   nixpkgs.overlays = [ emacs-overlay ];
   # Treemacs requires python3
-  home.packages = [ pkgs.python3 ];
+  home.packages = [ pkgs.python3 pkgs.elixir pkgs.elixir-ls ];
+  home.file.elixir-ls = {
+    source = pkgs.elixir-ls;
+    target = ".elixir-ls";
+  };
+  # FIXME: sessionPath doesn't seem to work?
+  # home.sessionPath = [ "~/.elixir-ls" ];
   services.emacs.enable = true;
   programs.emacs = {
     enable = true;
@@ -43,6 +49,7 @@ in {
         treemacs-icons-dired
         treemacs-magit
         lsp-mode
+        lsp-treemacs
         lsp-ui
         rustic
         auto-dim-other-buffers

@@ -33,7 +33,12 @@
         ("C-c p" . projectile-command-map)))
 
 (use-package lsp-mode
-  :commands lsp)
+  :commands lsp
+  :diminish lsp-mode
+  :hook
+  (elixir-mode . lsp)
+  :init
+  (add-to-list 'exec-path "/home/little-dude/.elixir-ls"))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
