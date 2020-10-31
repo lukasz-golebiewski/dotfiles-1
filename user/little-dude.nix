@@ -72,7 +72,6 @@ in {
     file
     shellcheck
     cargo-license
-    rust-analyzer
     gitAndTools.diff-so-fancy
     perl # needed for git diff???
     # tex and pandoc are always useful, for instance for converting

@@ -29,7 +29,14 @@
 
 (use-package rustic
   :config
-  (setq rustic-lsp-server 'rust-analyzer))
+  (setq rustic-lsp-server 'rust-analyzer)
+  (unbind-key "C-c C-c C-t" rustic-mode-map)
+  ;; when passing custom test args with rustic-test-arguments, we need
+  ;; to run rustic-cargo-test-rerun instead of rustic-cargo-test
+  ;;
+  ;; To pass custom test args, add this to .dir-locals.el:
+  ;; ((rustic-mode . ((rustic-test-arguments . "-- --skip integration"))))
+  :bind (("C-c C-c C-t" . rustic-cargo-test-rerun)))
 
 (use-package es-mode
   :init (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))

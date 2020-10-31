@@ -60,6 +60,9 @@ in {
         counsel
         swiper
         yaml-mode
+        # we don't use helm but it's needed to display rust documentation
+        # see: https://github.com/brotzeit/rustic#inline-documentation
+        helm-ag
       ]));
   };
 
