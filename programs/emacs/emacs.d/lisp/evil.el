@@ -10,6 +10,7 @@
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
+  (setq evil-undo-system 'undo-tree)
   :chords (("jk" . evil-normal-state))
   :config
   (evil-mode 1)

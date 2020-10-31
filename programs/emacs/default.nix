@@ -39,7 +39,6 @@ in {
         projectile
         evil
         evil-collection
-        # evil-magit requires undo-tree
         undo-tree
         evil-magit
         rainbow-delimiters
