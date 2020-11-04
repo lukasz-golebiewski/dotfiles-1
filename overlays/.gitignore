@@ -1,2 +1,3 @@
 rust-overlay.nix
+rust-src-overlay.nix
 **/*.zip
