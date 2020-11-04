@@ -52,3 +52,7 @@
   :init
   ;; (setq flycheck-mode-globals '(not rust-mode))
   (global-flycheck-mode))
+
+(use-package mix
+  :hook
+  (elixir-mode-hook . mix-minor-mode))

@@ -24,6 +24,7 @@ in {
     extraPackages = (epkgs:
       (with epkgs; [
         elixir-mode
+        mix
         direnv
         use-package
         use-package-chords
