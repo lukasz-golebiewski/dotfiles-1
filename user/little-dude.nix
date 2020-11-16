@@ -65,8 +65,16 @@ in {
     pgcli
     cookiecutter
     wget
+    glow
+    youtube-dl
+    moreutils
+    asciinema
+    inetutils
+    kubectl
 
     # dev tools
+    clang-tools
+    valgrind
     binutils
     strace
     file
@@ -80,6 +88,7 @@ in {
     pandoc
 
     # apps
+    wireshark-qt
     pavucontrol
     calibre
     discord
