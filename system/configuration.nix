@@ -6,6 +6,9 @@
     ./hardware-configuration.nix
   ];
 
+  # See https://github.com/mozilla/nixpkgs-mozilla/issues/51#issue-245576627
+  environment.pathsToLink = [ "/lib/rustlib/src" ];
+
   nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -30,9 +33,8 @@
   };
 
   # acpi_call is necessart for tlp to work on Thinkpads
-  boot.kernelModules = [ "acpi_call" ];
+  boot.kernelModules = [ "acpi_call" "kvm-amd" "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # Prevent the sound card from draining the battery:
   # https://askubuntu.com/questions/229204/audio-codec-consuming-high-battery-power
@@ -57,11 +59,11 @@
   time.timeZone = "Europe/Berlin";
 
   # See https://nixos.wiki/wiki/Intel_Graphics
-  environment.variables = { MESA_LOADER_DRIVER_OVERRIDE = "iris"; };
+  # environment.variables = { MESA_LOADER_DRIVER_OVERRIDE = "iris"; };
   hardware.opengl.enable = true;
-  hardware.opengl.package = (pkgs.mesa.override {
-    galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
-  }).drivers;
+  # hardware.opengl.package = (pkgs.mesa.override {
+  #   galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
+  # }).drivers;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
   hardware.pulseaudio.support32Bit = true;
@@ -100,16 +102,47 @@
   services.xserver.displayManager.gdm.wayland = false;
   services.xserver.desktopManager.gnome3.enable = true;
 
+  services = {
+    clamav = {
+      daemon.enable = true;
+      updater.enable = true;
+    };
+  };
+
+  # PostgresSQL
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_12;
+    enableTCPIP = true;
+    initialScript = pkgs.writeText "backend-initScript" ''
+      -- By default we use ident auth, so we want to create a role for ourself
+      CREATE ROLE "little-dude" WITH LOGIN CREATEDB;
+      -- Create a default db with our name, so that we can just login with `psql`
+      CREATE DATABASE "little-dude";
+      -- No idea what the default password is on NixOS for postgres, so we set it here
+      ALTER USER postgres PASSWORD 'postgres';
+    '';
+    # Note that because we use "Ident auth" for local connection, `psql -U postgres` does work: we need to be logged in as `postgres` first. By default a `postgres` user is created on the system but no
+    # password is set, so we have to `su` our way in: `sudo -u postgres psql`.
+    #
+    # See: https://github.com/NixOS/nixpkgs/blob/3ba3d8d8cbec36605095d3a30ff6b82902af289c/nixos/modules/services/databases/postgresql.nix#L190
+    #
+    # Otherwise we can log in via TCP with: `psql postgresql://postgres:postgres@localhost:5432/`
+  };
+
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
   # Docker. See: https://nixos.wiki/wiki/Docker
   virtualisation.docker.enable = true;
 
+  # To communicate with android. See: https://nixos.wiki/wiki/Android#adb_setup
+  programs.adb.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."little-dude" = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "adbusers" ];
     shell = pkgs.zsh;
   };
 
@@ -121,5 +154,6 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
 
+  virtualisation.libvirtd.enable = true;
 }
 
