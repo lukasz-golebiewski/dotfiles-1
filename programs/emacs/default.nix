@@ -65,6 +65,8 @@ in {
         helm-ag
         ini-mode
         protobuf-mode
+        rjsx-mode
+        prettier
       ]));
   };
 

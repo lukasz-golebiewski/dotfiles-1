@@ -37,8 +37,19 @@
   :diminish lsp-mode
   :hook
   (elixir-mode . lsp)
+  (rjsx-mode . lsp)
   :init
   (add-to-list 'exec-path "/home/little-dude/.elixir-ls"))
+
+(use-package rjsx-mode
+  :mode ("\\.js$" . rjsx-mode)
+  :interpreter ("node" . rjsx-mode)
+  :config
+  (setq js-indent-level 2))
+
+(use-package prettier
+  :hook
+  (rjsx-mode . prettier-mode))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
