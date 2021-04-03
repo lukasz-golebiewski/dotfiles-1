@@ -1,41 +1,74 @@
-# Part of this comes from
-# https://gist.github.com/walkermalling/23cf138432aee9d36cf59ff5b63a2a58
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec -a "$0" "$@"
+  '';
+in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
-  # See https://github.com/mozilla/nixpkgs-mozilla/issues/51#issue-245576627
-  environment.pathsToLink = [ "/lib/rustlib/src" ];
-
   nixpkgs.config.allowUnfree = true;
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
-
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    efiSupport = true;
-    enableCryptodisk = true;
-    device = "nodev";
+  # See: https://nixos.wiki/wiki/Nvidia
+  hardware.nvidia.prime = {
+    offload.enable = true;
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:45:0:0";
   };
 
-  boot.initrd.luks.devices = {
-    crypted = {
-      device = "/dev/disk/by-uuid/836ae1c1-cfb6-4e3d-866e-21a90fbfe56a";
+  boot = {
+    loader = {
+      # Use the systemd-boot EFI boot loader.
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      grub = {
+        # `os-prober` is able to detect the other OSes and generate the
+        # appropriate entries in grub.cfg, but in out case, it can't figure it
+        # out for Archlinux since the filesystem lives in an encrypted
+        # filesystem
+        useOSProber = false;
+        enable = true;
+        version = 2;
+        efiSupport = true;
+        enableCryptodisk = true;
+        device = "nodev";
+        # Ref: 
+        # https://paedubucher.ch/articles/2020-09-26-arch-linux-setup-with-disk-encryption.html
+        extraEntries = ''
+          menuentry "Archlinux" {
+            insmod part_gpt
+            insmod ext2
+            # Where to search for the kernel and initrd: the Archlinux boot partition
+            search --no-floppy --fs-uuid --set=root 9852ab9a-1c2a-4d50-b942-16dc1386f74f
+            # The crypt device is the encrypted LUKS partition (/dev/nvme0n1p2 in our case)
+            # And the root partition is where the filesystem is
+            linux /vmlinuz-linux cryptdevice=UUID=246c1cf6-1770-4f92-9b93-93802ff1b681:cryptlvm root=/dev/vg/archlinux
+            initrd /initramfs-linux.img
+          }'';
+      };
+    };
+    initrd.luks.devices.crypted = {
+      device = "/dev/disk/by-uuid/246c1cf6-1770-4f92-9b93-93802ff1b681";
       preLVM = true;
     };
+    # try to disable the bell
+    blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
+    # acpi_call is necessary for tlp to work on Thinkpads
+    # kvm-intel is for virtualization
+    kernelModules = [ "acpi_call" "kvm-intel" ];
+    extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  # acpi_call is necessart for tlp to work on Thinkpads
-  boot.kernelModules = [ "acpi_call" "kvm-amd" "kvm-intel" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   # Prevent the sound card from draining the battery:
   # https://askubuntu.com/questions/229204/audio-codec-consuming-high-battery-power
   # https://www.kernel.org/doc/html/latest/sound/designs/powersave.html
@@ -44,69 +77,83 @@
   #
   # Unfortunately extraModprobeConfig does not work properly so we use the
   # kernel params instead. See: https://github.com/NixOS/nixpkgs/issues/20906
+
   boot.kernelParams =
     [ "snd_hda_intel.power_save=1" "snd_hda_intel.power_save_controller=Y" ];
 
-  networking.hostName = "xain-laptop";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s31f6.useDHCP = true;
-  networking.interfaces.wlp0s20f3.useDHCP = true;
-
+  networking.hostName = "thinpad-p14s";
   time.timeZone = "Europe/Berlin";
 
-  # See https://nixos.wiki/wiki/Intel_Graphics
-  # environment.variables = { MESA_LOADER_DRIVER_OVERRIDE = "iris"; };
-  hardware.opengl.enable = true;
-  # hardware.opengl.package = (pkgs.mesa.override {
-  #   galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
-  # }).drivers;
-  hardware.opengl.driSupport32Bit = true;
-  hardware.opengl.extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-  hardware.pulseaudio.support32Bit = true;
-
+  # See https://github.com/mozilla/nixpkgs-mozilla/issues/51#issue-245576627
+  environment.pathsToLink = [ "/lib/rustlib/src" ];
   environment.etc.currentconfig.source = ./.;
 
   # Just the bare minimum: we use home-manager for this
-  environment.systemPackages = with pkgs; [ neovim git tlp powertop ];
+  environment.systemPackages = with pkgs; [
+    neovim
+    git
+    tlp
+    powertop
+    nvidia-offload
+  ];
 
   # power saving
   services.tlp.enable = true;
   # power usage monitoring
   powerManagement.powertop.enable = true;
 
-  services.sshd.enable = true;
-
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers = with pkgs; [
-    gutenprint
-    gutenprintBin
-    hplip
-    hplipWithPlugin
-    samsungUnifiedLinuxDriver
-    splix
-    brlaser
-    brgenml1lpr
-    brgenml1cupswrapper
-  ];
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      gutenprint
+      gutenprintBin
+      hplip
+      hplipWithPlugin
+      samsungUnifiedLinuxDriver
+      splix
+      brlaser
+      brgenml1lpr
+      brgenml1cupswrapper
+    ];
+  };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.layout = "us";
-  services.xserver.xkbOptions = "eurosign:e";
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = false;
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver = {
+    enable = true;
+    layout = "us";
+    xkbOptions = "eurosign:e";
 
-  services = {
-    clamav = {
-      daemon.enable = true;
-      updater.enable = true;
-    };
+    # Gnome
+    displayManager.gdm.enable = true;
+    desktopManager.gnome3.enable = true;
+
+    videoDrivers = [ "modesetting" "nvidia" ];
+
+    libinput.enable = true;
+    # Tried to configure the touchpad here, but this crashes xserver:
+    # inputClassSections = [''
+    #   Identifier "Synaptics TM3471-020"
+    #   Driver "libinput"
+    #   MatchIsTouchpad "on"
+    #   Device "/dev/input/event*"
+    #   Option "AccelProfille"        "adaptive,flat"
+    #   Option "ClickMethod"          "buttonareas,clickfinger"
+    #   Option "DisableWhileTyping"   "true"
+    #   Option "HorizontalScrolling"  "true"
+    #   Option "LeftHanded"           "false"
+    #   Option "MiddleEmulation"      "false"
+    #   Option "NaturalScrolling"     "false"
+    #   Option "ScrollMethod"         "twofinger,edge"
+    #   Option "SendEventsMode"       "enabled"
+    #   Option "Tapping"              "true"
+    #   Option "TappingDrag"          "true"
+    # ''];
+  };
+
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
   };
 
   # PostgresSQL
@@ -130,8 +177,7 @@
     # Otherwise we can log in via TCP with: `psql postgresql://postgres:postgres@localhost:5432/`
   };
 
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
+  services.sshd.enable = false;
 
   # Docker. See: https://nixos.wiki/wiki/Docker
   virtualisation.docker.enable = true;
@@ -142,9 +188,13 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."little-dude" = {
     isNormalUser = true;
+    uid = 1000;
+    group = "users";
     extraGroups = [ "wheel" "docker" "adbusers" ];
     shell = pkgs.zsh;
   };
+
+  users.groups = { users = { gid = 100; }; };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -155,5 +205,11 @@
   system.stateVersion = "20.09"; # Did you read the comment?
 
   virtualisation.libvirtd.enable = true;
+
+  fileSystems."/data" = {
+    device = "/dev/disk/by-label/data";
+    fsType = "ext4";
+  };
+
 }
 
