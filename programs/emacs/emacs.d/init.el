@@ -65,25 +65,9 @@
   ;; with mariadb, the default regexp used to match the prompt is a bit off. This fixes it.
   (sql-set-product-feature 'mysql :prompt-regexp "^\\(MariaDB\\|MySQL\\) \\[[_a-zA-Z]*\\]> "))
 
-;; from https://stackoverflow.com/a/24659949/1836144 see also
-;; https://emacs.stackexchange.com/questions/13214/automatically-formatting-sql-code
-(defun sql-indent-string ()
-  "Indent the string under the cursor as SQL."
-  (interactive)
-  (save-excursion
-    (er/mark-inside-quotes)
-    (let* ((text (buffer-substring-no-properties (region-beginning) (region-end)))
-           (pos (region-beginning))
-           (column (progn (goto-char pos) (current-column)))
-           (formatted-text (with-temp-buffer
-                             (insert text)
-                             (delete-trailing-whitespace)
-                             (sql-indent-buffer)
-                             (replace-string "\n" (concat "\n" (make-string column (string-to-char " "))) nil (point-min) (point-max))
-                             (buffer-string))))
-      (delete-region (region-beginning) (region-end))
-      (goto-char pos)
-      (insert formatted-text))))
+(use-package sqlformat
+  :config
+  (setq sqlformat-command 'pgformatter))
 
 (use-package vimrc-mode
   :init (add-to-list 'auto-mode-alist '("\\.vim\\(rc\\)?\\'" . vimrc-mode)))

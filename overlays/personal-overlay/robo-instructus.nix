@@ -44,7 +44,7 @@ stdenv.mkDerivation rec {
       --set-rpath $rPath \
       $out/bin/robo-instructus
   '';
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://www.roboinstruct.us/";
     description = "A programming game";
     license = licenses.unfree;

@@ -30,7 +30,8 @@ in {
         use-package-chords
         magit
         company
-        company-lsp
+        # See: https://github.com/tigersoldier/company-lsp/issues/147
+        # company-lsp
         flycheck
         es-mode
         ivy
@@ -41,7 +42,6 @@ in {
         evil
         evil-collection
         undo-tree
-        evil-magit
         rainbow-delimiters
         treemacs
         treemacs-evil
@@ -67,6 +67,10 @@ in {
         protobuf-mode
         rjsx-mode
         prettier
+        tide
+        typescript-mode
+        web-mode
+        sqlformat
       ]));
   };
 
@@ -86,7 +90,7 @@ in {
     "Emacs.toolBar" = false;
     "Emacs.verticalScrollBars" = false;
     "Emacs.Font" =
-      "-CYEL-Iosevka-normal-normal-normal-*-18-*-*-*-d-0-iso10646-1";
+      "-CYEL-Iosevka-normal-normal-normal-*-16-*-*-*-d-0-iso10646-1";
   };
 
   # Home manager's emacs service doesn't provide a desktop entry for the emacs

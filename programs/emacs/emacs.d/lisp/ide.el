@@ -36,8 +36,8 @@
   :commands lsp
   :diminish lsp-mode
   :hook
-  (elixir-mode . lsp)
-  (rjsx-mode . lsp)
+  (elixir-mode . lsp-deferred)
+  (rjsx-mode . lsp-deferred)
   :init
   (add-to-list 'exec-path "/home/little-dude/.elixir-ls"))
 
@@ -47,6 +47,38 @@
   :config
   (setq js-indent-level 2))
 
+(use-package typescript-mode
+  :mode "\\.tsx?$"
+  :interpreter ("node" . typescript-mode)
+  :hook
+  (typescript-mode . prettier-mode)
+  (typescript-mode . web-mode)
+  (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+(use-package web-mode
+  :mode
+  "\\.html\\'"
+  ;; Better not to specify this mode for the other filetypes, but
+  ;; rather start web-mode with a hook, since we can have only one
+  ;; entry per filetype in the auto-amode-list
+  ;;
+  ;; For instance we start web-mode from the typescript-mode
+  ;;
+  ;; ("\\.ejs\\'" "\\.hbs\\'" "\\.html\\'" "\\.php\\'" "\\.[jt]sx?\\'")
+  :config
+  (setq web-mode-content-types-alist '(("jsx" . "\\.[jt]sx?\\'")))
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-script-padding 2)
+  (setq web-mode-block-padding 2)
+  (setq web-mode-style-padding 2)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-auto-closing t)
+  (setq web-mode-enable-current-element-highlight t))
+
 (use-package prettier
   :hook
   (rjsx-mode . prettier-mode))
@@ -54,9 +86,9 @@
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
-(use-package company-lsp
-  :commands company-lsp
-  :config (push 'company-lsp company-backends))
+;; (use-package company-lsp
+;;   :commands company-lsp
+;;   :config (push 'company-lsp company-backends))
 
 (use-package flycheck
   :commands global-flycheck-mode
