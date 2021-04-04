@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 rec {
-  home.packages = [ pkgs.direnv ];
+  home.packages = [ pkgs.direnv pkgs.fzf ];
 
   programs.zsh = {
     enable = true;

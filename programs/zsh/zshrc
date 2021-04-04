@@ -67,3 +67,11 @@ function fix_apple_keyboard() {
     echo "disabling fn keys"
     echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode
 }
+
+# ===============================
+# fzf
+# ===============================
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
