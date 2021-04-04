@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 rec {
-  home.packages = [ pkgs.direnv pkgs.fzf ];
+  home.packages = [ pkgs.direnv pkgs.fzf pkgs.starship ];
 
   programs.zsh = {
     enable = true;
@@ -16,16 +16,6 @@ rec {
           repo = "zsh-syntax-highlighting";
           rev = "de95d50bce6f16fad7e20e9bf1fb7bff710dbcfd";
           sha256 = "142c031fqkjjmcj9yg6n1026km6h19nmg2nfkjpwipnliimi92qv";
-        };
-      }
-      {
-        name = "powerlevel10k";
-        file = "powerlevel10k.zsh-theme";
-        src = pkgs.fetchFromGitHub {
-          owner = "romkatv";
-          repo = "powerlevel10k";
-          rev = "8ef2b737d1f6099966a1eb16bdfc90d67b367f22";
-          sha256 = "02b25klkyyhpdbf2vwzzbrd8hnfjpckbpjy6532ir6jqp2n2ivpj";
         };
       }
       {
@@ -53,9 +43,9 @@ rec {
   };
 
   home.file = {
-    "p10k.zsh" = {
-      target = "${programs.zsh.dotDir}/p10k.zsh";
-      source = ./p10k.zsh;
+    "starship-prompt.toml" = {
+      target = "${programs.zsh.dotDir}/starship-prompt.toml";
+      source = ./starship-prompt.toml;
     };
   };
 }
