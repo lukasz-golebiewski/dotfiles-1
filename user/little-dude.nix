@@ -71,6 +71,9 @@ in {
     asciinema
     inetutils
     kubectl
+    lsof
+    pgformatter
+    xclip
 
     # dev tools
     clang-tools
@@ -86,6 +89,7 @@ in {
     # markdown to pdf
     texlive.combined.scheme-full
     pandoc
+    virt-manager
 
     # apps
     wireshark-qt
@@ -98,13 +102,13 @@ in {
     deluge
     dbeaver
     dia
+    gimp
     google-chrome
     libreoffice
-    skypeforlinux
     teams
     zoom-us
-    sweethome3d.application
     evince
+    mailspring
 
     # licensor
     # robo-instructus
