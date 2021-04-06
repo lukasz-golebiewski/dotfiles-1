@@ -62,24 +62,44 @@ in {
     };
     # try to disable the bell
     blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
-    # acpi_call is necessary for tlp to work on Thinkpads
-    # kvm-intel is for virtualization
-    kernelModules = [ "acpi_call" "kvm-intel" ];
+    kernelModules = [
+      # for tlp to work on Thinkpads
+      "acpi_call"
+      # for virtualization
+      "kvm-intel"
+      # for virtualization too (we disable netfilter on libvirt bridged networks, see the sysctl params below)
+      "br_netfilter"
+    ];
     extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
     kernelPackages = pkgs.linuxPackages_latest;
+
+    # Note that to configure kernel module, we there's extraModprobeConfig:
+    #
+    #     extraModprobeConfig = "options snd_hda_intel power_save=1 power_save_controller=Y";
+    #
+    # but it doesn't seem to work. See also: https://github.com/NixOS/nixpkgs/issues/20906.
+    # Therefore we use kernel command line parameters instead.
+    kernelParams = [
+      # Prevent the sound card from draining the battery:
+      # https://askubuntu.com/questions/229204/audio-codec-consuming-high-battery-power
+      # https://www.kernel.org/doc/html/latest/sound/designs/powersave.html
+      "snd_hda_intel.power_save=1"
+      "snd_hda_intel.power_save_controller=Y"
+      # Clicks are not detected correctly otherwise. See: https://discourse.nixos.org/t/touchpad-click-not-working/12276
+      "psmouse.synaptics_intertouch=0"
+    ];
+
+    kernel.sysctl = {
+      # Disable netfilter. This is necessary for libvirt bridged networks,
+      # since we want to allow all traffic to be forwarded to the bridge
+      # See:
+      # https://linuxconfig.org/how-to-use-bridged-networking-with-libvirt-and-kvm
+      # Note that these settings require the `br_netfilter` module to be loaded.
+      "net.bridge.bridge-nf-call-ip6tables" = 0;
+      "net.bridge.bridge-nf-call-iptables" = 0;
+      "net.bridge.bridge-nf-call-arptables" = 0;
+    };
   };
-
-  # Prevent the sound card from draining the battery:
-  # https://askubuntu.com/questions/229204/audio-codec-consuming-high-battery-power
-  # https://www.kernel.org/doc/html/latest/sound/designs/powersave.html
-  #
-  #     boot.extraModprobeConfig = "options snd_hda_intel power_save=1 power_save_controller=Y";
-  #
-  # Unfortunately extraModprobeConfig does not work properly so we use the
-  # kernel params instead. See: https://github.com/NixOS/nixpkgs/issues/20906
-
-  boot.kernelParams =
-    [ "snd_hda_intel.power_save=1" "snd_hda_intel.power_save_controller=Y" ];
 
   networking.hostName = "thinpad-p14s";
   time.timeZone = "Europe/Berlin";
@@ -190,7 +210,7 @@ in {
     isNormalUser = true;
     uid = 1000;
     group = "users";
-    extraGroups = [ "wheel" "docker" "adbusers" ];
+    extraGroups = [ "wheel" "docker" "adbusers" "libvirtd" ];
     shell = pkgs.zsh;
   };
 
@@ -203,6 +223,14 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
+
+  # List of hosts entries to configure in /etc/nsswitch.conf. Note that "files"
+  # is always prepended, and "dns" and "myhostname" are always appended. This
+  # option only takes effect if nscd is enabled.
+  #
+  # Adding libvirt allows us to ssh into VMs using their hostname. See:
+  # https://wiki.archlinux.org/index.php/Libvirt#Access_virtual_machines_using_their_hostnames
+  system.nssDatabases.hosts = [ "libvirt" "libvirt_guest" ];
 
   virtualisation.libvirtd.enable = true;
 
