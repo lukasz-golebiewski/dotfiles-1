@@ -39,6 +39,8 @@ rec {
       lal = "exa -al";
       tree = "exa --tree --level=3";
       virsh = "virsh -c qemu:///system";
+      diff = "git diff --no-index";
+
     };
     initExtra = builtins.readFile ./zshrc;
   };
