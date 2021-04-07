@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 # {
 #   xdg.configFile.".tmux.conf".source = ./tmux.conf;
@@ -14,4 +14,3 @@ with pkgs.python38Packages; {
     '' + builtins.readFile ./tmux.conf;
   };
 }
-

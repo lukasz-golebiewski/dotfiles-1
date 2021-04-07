@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 rec {
   home.packages = [ pkgs.direnv pkgs.fzf pkgs.starship ];

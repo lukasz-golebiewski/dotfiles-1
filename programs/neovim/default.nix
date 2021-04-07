@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 # {
 #   xdg.configFile."nvim/init.vim".source = ./init.vim;
