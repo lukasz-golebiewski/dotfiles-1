@@ -1,39 +1,43 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   mozilla-overlays = fetchTarball {
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
+  rust-overlay = fetchTarball {
+    url = "https://github.com/oxalica/rust-overlay/archive/master.tar.gz";
+  };
   # The whole nerdfonts package is > 2GB, and we only need two fonts.
   nerdfonts = pkgs.nerdfonts.override { fonts = [ "Hack" "Iosevka" ]; };
 
-in {
+in rec {
   home.username = "little-dude";
   home.homeDirectory = "/home/little-dude";
 
   # FIXME: remove this when possible. Currently, this is a dependency of sweethome3d
   nixpkgs.config.permittedInsecurePackages = [ "p7zip-16.02" ];
 
-  imports =
-    [ ../programs/zsh ../programs/neovim ../programs/tmux ../programs/emacs ];
+  imports = [
+    ../programs/zsh
+    ../programs/neovim
+    ../programs/tmux
+    ../programs/emacs
+    (import ../programs/git { workdir = "${home.homeDirectory}/data/work"; })
+  ];
 
-  # Make the mozilla overlays available to home-manager, because they
-  # contain firefox nightly
-  nixpkgs.overlays =
-    [ (import "${mozilla-overlays}") (import ../overlays/personal-overlay) ];
+  # Make the mozilla overlays available to home-manager, because they contain firefox nightly
+  nixpkgs.overlays = [
+    (import "${mozilla-overlays}")
+    (import ../overlays/personal-overlay)
+    (import "${rust-overlay}")
+  ];
 
   # Also make the overlay permanent so that we can use the rust
   # overlays in our projects
   xdg.configFile."rust-overlay.nix" = {
-    source = "${mozilla-overlays}/rust-overlay.nix";
+    source = "${rust-overlay}/default.nix";
     target = "nixpkgs/overlays/rust-overlay.nix";
   };
-  # The rust-src overlay contains rust-analyzer
-  xdg.configFile."rust-src-overlay.nix" = {
-    source = "${mozilla-overlays}/rust-src-overlay.nix";
-    target = "nixpkgs/overlays/rust-src-overlay.nix";
-  };
-
   fonts.fontconfig.enable = true;
 
   # Enhanced nix-shell
@@ -108,49 +112,8 @@ in {
     teams
     zoom-us
     evince
-    mailspring
 
     # licensor
     # robo-instructus
   ];
-
-  programs.git = {
-    enable = true;
-    userEmail = "corentinhenry@gmail.com";
-    userName = "little-dude";
-    extraConfig = {
-      push = { default = "matching"; };
-      core = {
-        editor = "nvim";
-        # excludesfile = "/home/corentih/.config/git/gitignore";
-        ignorecase = false;
-        pager = "diff-so-fancy | less --tabs=4 -RFX";
-      };
-      github = { user = "little-dude"; };
-      forge = {
-        # By default, forge uses the remote named "origin" as the
-        # *upstream*, but we follow a different convention where
-        # "upstream" is the upstream remote and "origin" is our own
-        # fork.
-        remote = "upstream";
-      };
-      color = {
-        ui = true;
-        diff-highlight = {
-          oldNormal = "red bold";
-          oldHighlight = "red bold 52";
-          newNormal = "green bold";
-          newHighlight = "green bold 22";
-        };
-        diff = {
-          meta = 11;
-          frag = "magenta bold";
-          commit = "yellow bold";
-          old = "red bold";
-          new = "green bold";
-          whitespace = "red reverse";
-        };
-      };
-    };
-  };
 }
