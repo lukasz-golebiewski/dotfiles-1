@@ -74,3 +74,4 @@ eval "$(starship init zsh)"
 
 export EDITOR=vim
 export VISUAL=vim
+alias debian="ssh little-dude@10.0.0.203 -t tmux a -t debian"
