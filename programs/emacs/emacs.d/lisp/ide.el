@@ -99,3 +99,5 @@
 (use-package mix
   :hook
   (elixir-mode-hook . mix-minor-mode))
+
+(use-package yang-mode)

@@ -71,6 +71,7 @@ in {
         typescript-mode
         web-mode
         sqlformat
+        yang-mode
       ]));
   };
 
