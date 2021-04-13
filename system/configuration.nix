@@ -101,21 +101,24 @@ in {
     };
   };
 
-  networking.hostName = "thinpad-p14s";
+  networking = {
+    hostName = "thinpad-p14s";
+    extraHosts = let
+      hostsPath =
+        "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
+      hostsFile = builtins.fetchurl hostsPath;
+    in builtins.readFile "${hostsFile}";
+  };
+
   time.timeZone = "Europe/Berlin";
 
   # See https://github.com/mozilla/nixpkgs-mozilla/issues/51#issue-245576627
-  environment.pathsToLink = [ "/lib/rustlib/src" ];
-  environment.etc.currentconfig.source = ./.;
-
-  # Just the bare minimum: we use home-manager for this
-  environment.systemPackages = with pkgs; [
-    neovim
-    git
-    tlp
-    powertop
-    nvidia-offload
-  ];
+  environment = {
+    pathsToLink = [ "/lib/rustlib/src" ];
+    etc.currentconfig.source = ./.;
+    # Just the bare minimum: we use home-manager for this
+    systemPackages = with pkgs; [ neovim git tlp powertop nvidia-offload ];
+  };
 
   # power saving
   services.tlp.enable = true;
