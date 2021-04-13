@@ -7,7 +7,7 @@
       push = { default = "matching"; };
       core = {
         editor = "nvim";
-        # excludesfile = "/home/corentih/.config/git/gitignore";
+        excludesfile = "${./gitignore}";
         ignorecase = false;
         pager = "diff-so-fancy | less --tabs=4 -RFX";
       };
