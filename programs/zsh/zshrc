@@ -75,3 +75,7 @@ eval "$(starship init zsh)"
 export EDITOR=vim
 export VISUAL=vim
 alias debian="ssh little-dude@10.0.0.203 -t tmux a -t debian"
+alias cdd="cd ~/.config/nixpkgs"
+alias cdw="cd ~/data/work"
+alias cdf="cd ~/data/work/graphiant/flockrs"
+alias cdn="cd ~/data/code/netlink"
