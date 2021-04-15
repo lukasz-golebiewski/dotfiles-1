@@ -9,6 +9,8 @@ let
   };
   # The whole nerdfonts package is > 2GB, and we only need two fonts.
   nerdfonts = pkgs.nerdfonts.override { fonts = [ "Hack" "Iosevka" ]; };
+  datadir = "/data";
+  workdir = "${datadir}/work";
 
 in rec {
   home.username = "little-dude";
@@ -22,7 +24,7 @@ in rec {
     ../programs/neovim
     ../programs/tmux
     ../programs/emacs
-    (import ../programs/git { workdir = "${home.homeDirectory}/data/work"; })
+    (import ../programs/git { workdir = workdir; })
   ];
 
   # Make the mozilla overlays available to home-manager, because they contain firefox nightly

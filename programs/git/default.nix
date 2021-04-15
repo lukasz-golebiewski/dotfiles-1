@@ -37,9 +37,12 @@
         };
       };
     };
-    includes = [{
-      condition = "gitdir:${workdir}/**";
-      path = ./work.config;
-    }];
+    includes = [
+      {
+        condition = "gitdir:${workdir}/**";
+        path = ./work.config;
+      }
+    ];
+
   };
 }
