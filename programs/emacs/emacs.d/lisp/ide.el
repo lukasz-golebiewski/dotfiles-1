@@ -32,6 +32,9 @@
         ;; ("s-p" . projectile-command-map)
         ("C-c p" . projectile-command-map)))
 
+(use-package counsel-projectile
+  :init (counsel-projectile-mode +1))
+
 (use-package lsp-mode
   :commands lsp
   :diminish lsp-mode

@@ -14,6 +14,7 @@
   :chords (("jk" . evil-normal-state))
   :config
   (evil-mode 1)
+  (setq evil-symbol-word-search t)
   ;; Use vim-like search.
   (evil-select-search-module 'evil-search-module 'evil-search)
   (define-key evil-normal-state-map "s" nil)

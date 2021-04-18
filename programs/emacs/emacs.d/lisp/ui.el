@@ -50,7 +50,6 @@
 (setq create-lockfiles nil)
 
 ;; =============================== Theme ===============================
-;; (use-package gruvbox-theme :config (load-theme 'gruvbox t))
 (use-package atom-one-dark-theme
   :config
   (load-theme 'atom-one-dark t)
@@ -68,6 +67,11 @@
    '(clojure-keyword-face ((t (:foreground "seashell4" :slant italic))))
    '(rainbow-delimiters-depth-1-face ((t (:foreground "wheat"))))
    '(rainbow-delimiters-unmatched-face ((t (:background "dark gray" :foreground "red"))))))
+;; (use-package doom-themes)
+;; (load-theme 'doom-palenight t)
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 ;; we highlight the current line, but it's too pale with atom-one-dark so we override it here
 (set-face-background hl-line-face "gray0")
@@ -81,29 +85,29 @@
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
+(use-package all-the-icons)
+
+
 ;; ======================== Treemacs ========================
+(use-package treemacs-all-the-icons)
+
 (use-package treemacs
   :config
   (setq treemacs-show-cursor nil)
+  (treemacs-load-theme "all-the-icons")
   :bind
   (([f9] . treemacs)))
 
 (use-package treemacs-evil
-  :after treemacs evil)
+  :after treemacs evil
+  :bind
+   (("M-l" . 'evil-window-right)))
 
 (use-package treemacs-projectile
   :after treemacs projectile)
 
-(use-package treemacs-icons-dired
-  :after treemacs dired
-  :config (treemacs-icons-dired-mode))
-
 (use-package treemacs-magit
   :after treemacs magit)
-
-;; (use-package lsp-treemacs
-;;   :after treemacs lsp-mode
-;;   :config (lsp-treemacs-sync-mode 1))
 
 (use-package auto-dim-other-buffers
   :commands auto-dim-other-buffers-mode
@@ -123,15 +127,24 @@
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  ;; by default, the regexp used by ivy starts with ^, which is
+  ;; annoying. See:
+  ;; https://emacs.stackexchange.com/a/38842/22105
   (setq ivy-initial-inputs-alist nil))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.2))
 
 (use-package counsel
   :after ivy
   :config
-  ;; by default, the regexp used by ivy starts with ^, which is
-  ;; annoying. See:
-  ;; https://emacs.stackexchange.com/a/38842/22105
-  ;; (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) "")
   (counsel-mode)
   :bind ((:map minibuffer-local-map ("C-r" . 'counsel-minibuffer-history))))
 
@@ -139,3 +152,14 @@
   :after ivy
   :bind (("C-s" . swiper)
          ("C-r" . swiper)))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . helpful-function)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-key] . helpful-key))

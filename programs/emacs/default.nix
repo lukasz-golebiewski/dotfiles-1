@@ -11,7 +11,8 @@ let
 in {
   nixpkgs.overlays = [ emacs-overlay ];
   # Treemacs requires python3
-  home.packages = [ pkgs.python3 pkgs.elixir pkgs.elixir-ls ];
+  home.packages =
+    [ pkgs.python3 pkgs.elixir pkgs.elixir-ls pkgs.emacs-all-the-icons-fonts ];
   home.file.elixir-ls = {
     source = pkgs.elixir-ls;
     target = ".elixir-ls";
@@ -23,6 +24,9 @@ in {
     enable = true;
     extraPackages = (epkgs:
       (with epkgs; [
+        doom-themes
+        doom-modeline
+        all-the-icons
         elixir-mode
         mix
         direnv
@@ -34,7 +38,6 @@ in {
         # company-lsp
         flycheck
         es-mode
-        ivy
         elpy
         rg
         vimrc-mode
@@ -46,7 +49,7 @@ in {
         treemacs
         treemacs-evil
         treemacs-projectile
-        treemacs-icons-dired
+        treemacs-all-the-icons
         treemacs-magit
         lsp-mode
         lsp-treemacs
@@ -57,8 +60,13 @@ in {
         command-log-mode
         dockerfile-mode
         nix-mode
+        ivy
+        ivy-rich
         counsel
+        counsel-projectile
         swiper
+        which-key
+        helpful
         yaml-mode
         # we don't use helm but it's needed to display rust documentation
         # see: https://github.com/brotzeit/rustic#inline-documentation
