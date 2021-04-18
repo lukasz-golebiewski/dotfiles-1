@@ -21,12 +21,18 @@
 ;; customize font
 ;; (set-frame-font "-CYEL-Iosevka-normal-normal-normal-*-18-*-*-*-d-0-iso10646-1")
 
-;; Prettify line number format
-(setq linum-format "%4d ")
-(add-hook 'prog-mode-hook                 ; Show line numbers in programming modes
-          (if (fboundp 'display-line-numbers-mode)
-              #'display-line-numbers-mode
-            #'linum-mode))
+;; Display line number except for certain modes
+(global-display-line-numbers-mode t) ; requires emacs 26
+(dolist (mode '(message-buffer-mode-hook
+                treemacs-mode-hook
+                magit-status-mode-hook
+                org-mode-hook
+                term-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Display column number
+(column-number-mode)
 
 ;; highlight the line where the cursor is
 (global-hl-line-mode +1)
