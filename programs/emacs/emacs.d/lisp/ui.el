@@ -1,13 +1,6 @@
 ;; ============================ General emacs settings ============================
 ;; maximize the emacs window on startup
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-;; ;; Disable menu-bar, tool-bar, and scroll-bar.
-;; (if (fboundp 'menu-bar-mode)
-;;     (menu-bar-mode -1))
-;; (if (fboundp 'tool-bar-mode)
-;;     (tool-bar-mode -1))
-;; (if (fboundp 'scroll-bar-mode)
-;;     (scroll-bar-mode -1))
 
 ;; Disable startup screen
 (setq inhibit-startup-screen t)
@@ -19,6 +12,7 @@
 (setq-default frame-title-format '("%b"))
 
 ;; customize font
+;; TODO: make this dynamic, maybe with hydra?
 ;; (set-frame-font "-CYEL-Iosevka-normal-normal-normal-*-18-*-*-*-d-0-iso10646-1")
 
 ;; Display line number except for certain modes
