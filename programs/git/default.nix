@@ -10,6 +10,7 @@
         excludesfile = "${./gitignore}";
         ignorecase = false;
         pager = "diff-so-fancy | less --tabs=4 -RFX";
+        commentChar = "@";
       };
       github = { user = "little-dude"; };
       forge = {
