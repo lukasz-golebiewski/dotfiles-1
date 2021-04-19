@@ -1,49 +1,34 @@
-{ pkgs, ... }:
+{ pkgs, settings, ... }:
 
 let
   mozilla-overlays = fetchTarball {
     url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz";
   };
-  rust-overlay = fetchTarball {
-    url = "https://github.com/oxalica/rust-overlay/archive/master.tar.gz";
-  };
   # The whole nerdfonts package is > 2GB, and we only need two fonts.
   nerdfonts = pkgs.nerdfonts.override { fonts = [ "Hack" "Iosevka" ]; };
-  datadir = "/data";
-  workdir = "${datadir}/work";
-
 in rec {
   home.username = "little-dude";
   home.homeDirectory = "/home/little-dude";
-
-  # FIXME: remove this when possible. Currently, this is a dependency of sweethome3d
-  nixpkgs.config.permittedInsecurePackages = [ "p7zip-16.02" ];
+  home.sessionVariables = {
+    EDITOR="nvim";
+    BROWSER = "firefox";
+  };
+  xdg.enable = true;
+  xdg.mime.enable = true;
 
   imports = [
-    ../programs/zsh
+    (import ../programs/zsh { inherit pkgs settings home; })
     ../programs/neovim
     ../programs/tmux
     ../programs/emacs
-    (import ../programs/git { workdir = workdir; })
+    (import ../programs/git { inherit settings; })
   ];
 
   # Make the mozilla overlays available to home-manager, because they contain firefox nightly
-  nixpkgs.overlays = [
-    (import "${mozilla-overlays}")
-    (import ../overlays/personal-overlay)
-    (import "${rust-overlay}")
-  ];
+  nixpkgs.overlays =
+    [ (import "${mozilla-overlays}") (import ../overlays/personal-overlay) ];
 
-  # Also make the overlay permanent so that we can use the rust
-  # overlays in our projects
-  xdg.configFile."rust-overlay.nix" = {
-    source = "${rust-overlay}/default.nix";
-    target = "nixpkgs/overlays/rust-overlay.nix";
-  };
   fonts.fontconfig.enable = true;
-
-  # Enhanced nix-shell
-  services.lorri.enable = true;
 
   home.packages = with pkgs; [
     # fonts
@@ -64,55 +49,15 @@ in rec {
     dfc
     nixfmt
     unzip
-    exercism
-    socat
-    pciutils
-    httpie
     pgcli
-    cookiecutter
-    wget
-    glow
-    youtube-dl
-    moreutils
-    asciinema
-    inetutils
-    kubectl
-    lsof
     pgformatter
-    xclip
+    diff-so-fancy
 
     # dev tools
-    clang-tools
-    valgrind
-    binutils
-    strace
-    file
     shellcheck
-    cargo-license
-    gitAndTools.diff-so-fancy
-    perl # needed for git diff???
-    # tex and pandoc are always useful, for instance for converting
-    # markdown to pdf
-    texlive.combined.scheme-full
-    pandoc
-    virt-manager
 
     # apps
-    wireshark-qt
-    pavucontrol
-    calibre
-    discord
-    vlc
-    filezilla
     latest.firefox-nightly-bin
-    deluge
-    dbeaver
-    dia
-    gimp
-    google-chrome
-    libreoffice
-    teams
-    zoom-us
     evince
 
     # licensor

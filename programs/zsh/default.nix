@@ -1,9 +1,23 @@
-{ pkgs, ... }:
+{ pkgs, settings, home, ... }:
 
-rec {
+let
+  zshEnv = if !settings.isNixOS then ''
+    source "${home.homeDirectory}/.cargo/env"
+    if [ -e ${home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then . /${home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh; fi
+    export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+  '' else
+    "";
+  zshProfile = if !settings.isNixOS then ''
+    export XDG_DATA_DIRS="${home.homeDirectory}/.nix-profile/share:$XDG_DATA_DIRS"
+''
+else "";
+
+in rec {
   home.packages = [ pkgs.direnv pkgs.fzf pkgs.starship ];
 
   programs.zsh = {
+    profileExtra = zshProfile;
+    envExtra = zshEnv;
     enable = true;
     # autocd = true;
     defaultKeymap = "emacs";

@@ -1,4 +1,4 @@
-{ workdir }: {
+{ settings }: {
   programs.git = {
     enable = true;
     userEmail = "little-dude@mailbox.org";
@@ -40,7 +40,7 @@
     };
     includes = [
       {
-        condition = "gitdir:${workdir}/**";
+        condition = "gitdir:${settings.workdir}/**";
         path = ./work.config;
       }
     ];

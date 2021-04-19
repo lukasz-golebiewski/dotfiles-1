@@ -1,7 +1,7 @@
 # The emacs config is adapted from
 # https://github.com/willbush/system/blob/a5194a36ddce655726cb4b060fa917d0603ddc95/nixos/emacs.nix
 
-{ pkgs, fetchFromGitHub, ... }:
+{ pkgs, ... }:
 
 let
   emacs-overlay = import (builtins.fetchTarball {
