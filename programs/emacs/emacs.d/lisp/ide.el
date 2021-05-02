@@ -42,7 +42,10 @@
   (elixir-mode . lsp-deferred)
   (rjsx-mode . lsp-deferred)
   :init
-  (add-to-list 'exec-path "/home/little-dude/.elixir-ls"))
+  (setq lsp-keymap-prefix "C-c l")
+  (add-to-list 'exec-path "/home/little-dude/.elixir-ls")
+  :config
+  (lsp-enable-which-key-integration t))
 
 (use-package rjsx-mode
   :mode ("\\.js$" . rjsx-mode)
