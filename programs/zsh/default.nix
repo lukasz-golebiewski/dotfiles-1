@@ -9,8 +9,8 @@ let
     "";
   zshProfile = if !settings.isNixOS then ''
     export XDG_DATA_DIRS="${home.homeDirectory}/.nix-profile/share:$XDG_DATA_DIRS"
-''
-else "";
+  '' else
+    "";
 
 in rec {
   home.packages = [ pkgs.direnv pkgs.fzf pkgs.starship ];

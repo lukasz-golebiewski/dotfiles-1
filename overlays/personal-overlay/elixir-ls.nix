@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+with import <nixpkgs> { };
 stdenv.mkDerivation rec {
   name = "elixir-ls";
   version = "0.6.0";
@@ -6,7 +6,8 @@ stdenv.mkDerivation rec {
   # specify that?
   buildInputs = [ elixir ];
   src = fetchurl {
-    url = "https://github.com/elixir-lsp/elixir-ls/releases/download/v${version}/elixir-ls.zip";
+    url =
+      "https://github.com/elixir-lsp/elixir-ls/releases/download/v${version}/elixir-ls.zip";
     sha256 = "0wbcpsqjplgd484a11v6bzyv8529z20xq7mmdas261zcch4wz117";
   };
 

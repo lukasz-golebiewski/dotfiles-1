@@ -10,7 +10,7 @@ in rec {
   home.username = "little-dude";
   home.homeDirectory = "/home/little-dude";
   home.sessionVariables = {
-    EDITOR="nvim";
+    EDITOR = "nvim";
     BROWSER = "firefox";
   };
   xdg.enable = true;
