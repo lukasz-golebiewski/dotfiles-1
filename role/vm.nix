@@ -45,7 +45,10 @@
     };
   };
   programs = {
-    rofi = { enable = true; };
+    rofi = {
+      enable = true;
+      theme = "Arc-Dark";
+    };
     i3status-rust = {
       enable = true;
       bars = {
@@ -93,11 +96,13 @@
   };
   xsession = {
     enable = true;
+    #initExtra = ''xmodmap $XDG_CONFIG_HOME/xmodmap
+    #  exec --no-startup-id xsetroot -solid "#333333"'';
     initExtra = "xmodmap $XDG_CONFIG_HOME/xmodmap";
     windowManager.i3 = let
       ws_web = "1:";
-      ws_code = "2:";
-      ws_extras = "extras";
+      ws_code = "2:"; # 
+      ws_terminal = "";
     in {
       enable = true;
       config = rec {
@@ -114,7 +119,7 @@
             "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
         }];
         assigns = {
-          ${ws_extras} = [ ];
+          ${ws_terminal} = [ ];
           ${ws_web} = [{ class = "^Nightly$"; }];
           ${ws_code} = [{ class = "^Emacs$"; }];
         };
@@ -124,8 +129,9 @@
           "${modifier}+F1" = "exec firefox";
           "${modifier}+F2" = "exec emacs";
           "${modifier}+q" = "kill";
+          "${modifier}+d" =
+            "exec --no-startup-id rofi -modi 'window#ssh#drun' -show drun";
           "$alt+F4" = "kill";
-          "$alt+F2" = "exec dmenu_run";
 
           "${modifier}+1" = "workspace ${ws_web}";
           "${modifier}+Shift+1" = "move container to workspace ${ws_web}";
@@ -133,8 +139,8 @@
           "${modifier}+2" = "workspace ${ws_code}";
           "${modifier}+Shift+2" = "move container to workspace ${ws_code}";
 
-          "${modifier}+3" = "workspace ${ws_extras}";
-          "${modifier}+Shift+3" = "move container to workspace ${ws_extras}";
+          "${modifier}+3" = "workspace ${ws_terminal}";
+          "${modifier}+Shift+3" = "move container to workspace ${ws_terminal}";
         };
       };
     };
