@@ -101,8 +101,9 @@
     initExtra = "xmodmap $XDG_CONFIG_HOME/xmodmap";
     windowManager.i3 = let
       ws_web = "1:";
-      ws_code = "2:"; # 
-      ws_terminal = "";
+      ws_code = "2:";
+      ws_terminal = "3:";
+      ws_teams = "4:";
     in {
       enable = true;
       config = rec {
@@ -119,9 +120,10 @@
             "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
         }];
         assigns = {
-          ${ws_terminal} = [ ];
           ${ws_web} = [{ class = "^Nightly$"; }];
           ${ws_code} = [{ class = "^Emacs$"; }];
+          ${ws_terminal} = [ ];
+          ${ws_teams} = [ ];
         };
         modifier = "Mod3";
         terminal = "st -f 'Hack Nerd Font:size=12'";
@@ -141,6 +143,9 @@
 
           "${modifier}+3" = "workspace ${ws_terminal}";
           "${modifier}+Shift+3" = "move container to workspace ${ws_terminal}";
+
+          "${modifier}+4" = "workspace ${ws_teams}";
+          "${modifier}+Shift+4" = "move container to workspace ${ws_teams}";
         };
       };
     };
