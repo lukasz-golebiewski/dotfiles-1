@@ -10,7 +10,7 @@
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"
       ghub-use-workaround-for-emacs-bug nil))
 
-(use-package evil-magit
-  :after evil magit
-  :config
-  (evil-define-key* evil-magit-state magit-mode-map [escape] nil))
+;; (use-package evil-magit
+;;   :after evil magit
+;;   :config
+;;   (evil-define-key* evil-magit-state magit-mode-map [escape] nil))
