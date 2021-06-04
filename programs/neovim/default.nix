@@ -6,7 +6,6 @@
 
 {
   programs.neovim = {
-    withPython = false;
     enable = true;
     vimAlias = true;
     viAlias = true;
