@@ -121,7 +121,8 @@ in {
   };
 
   # power saving
-  services.tlp.enable = true;
+  # See: https://github.com/NixOS/nixos-hardware/issues/260
+  # services.tlp.enable = true;
   # power usage monitoring
   powerManagement.powertop.enable = true;
 
