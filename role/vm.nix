@@ -2,6 +2,11 @@
 
 {
   home.packages = with pkgs; [
+    networkmanager
+    networkmanagerapplet
+    alsaTools
+    alsaUtils
+    xorg.xmodmap
     direnv
     lorri
     st
@@ -45,6 +50,7 @@
     };
   };
   programs = {
+    # gnome-terminal.enable = true;
     rofi = {
       enable = true;
       theme = "Arc-Dark";
@@ -59,7 +65,7 @@
           blocks = [
             {
               block = "sound";
-              format = "{output_name} {volume}%";
+              format = "{output_name} {volume}";
               on_click = "pavucontrol --tab=3";
               mappings = {
                 "alsa_output.pci-0000_00_1b.0.analog-stereo" = "speaker";
@@ -72,7 +78,7 @@
             }
             {
               block = "memory";
-              format_mem = "{Mum}M/{MTm}M ({Mup}%)";
+              format_mem = "{mem_used}/{mem_total}({mem_used_percents})";
               display_type = "memory";
               icons = true;
               interval = 1;
@@ -108,14 +114,23 @@
       enable = true;
       config = rec {
         bars = [{
+          fonts = {
+            names = [ "Hack" "FontAwesome" ];
+            size = 12.0;
+          };
           position = "top";
           workspaceButtons = true;
           workspaceNumbers = false;
           statusCommand =
             "i3status-rs $HOME/.config/i3status-rust/config-top.toml";
         }];
-        fonts = [ "Hack 12" ];
+        fonts = {
+          names = [ "Hack" "FontAwesome" ];
+          size = 12.0;
+        };
         startup = [{
+          # command =
+          #  "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
           command =
             "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
         }];
