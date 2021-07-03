@@ -15,9 +15,6 @@ in rec {
     target = "nixpkgs/overlays/rust-overlay.nix";
   };
 
-  # Enhanced nix-shell
-  services.lorri.enable = true;
-
   home.packages = with pkgs; [
     gnome3.gnome-tweaks
     exercism

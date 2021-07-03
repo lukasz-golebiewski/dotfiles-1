@@ -30,6 +30,9 @@ in rec {
 
   fonts.fontconfig.enable = true;
 
+  services.lorri.enable = true;
+
+  programs.go.enable = true;
   home.packages = with pkgs; [
     # fonts
     hack-font
