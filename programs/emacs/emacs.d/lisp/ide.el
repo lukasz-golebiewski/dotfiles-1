@@ -92,14 +92,10 @@
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
-;; (use-package company-lsp
-;;   :commands company-lsp
-;;   :config (push 'company-lsp company-backends))
-
 (use-package flycheck
   :commands global-flycheck-mode
   :init
-  ;; (setq flycheck-mode-globals '(not rust-mode))
+  (setq flycheck-mode-globals '(not rust-mode rustic-mode))
   (global-flycheck-mode))
 
 (use-package mix

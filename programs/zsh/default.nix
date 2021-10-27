@@ -5,6 +5,8 @@ let
     source "${home.homeDirectory}/.cargo/env"
     if [ -e ${home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh ]; then . /${home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh; fi
     export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+    # For stuff not managed by nix. For instance we put rust-analyzer there on Debian, when we manage rust via rustup
+    export PATH=''${PATH}:''${HOME}/.local/bin
   '' else
     "";
   zshProfile = if !settings.isNixOS then ''

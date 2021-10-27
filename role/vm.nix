@@ -15,6 +15,8 @@
     arc-theme
     moka-icon-theme
     xfce.thunar
+    teams
+    texlive.combined.scheme-full
   ];
   targets.genericLinux = {
     enable = true;
@@ -129,10 +131,8 @@
           size = 12.0;
         };
         startup = [{
-          # command =
-          #  "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
           command =
-            "exec xrandr --output Virtual-0 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-1 --off --output Virtual-2 --off --output Virtual-3 --off";
+            "exec xrandr --output Virtual-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output Virtual-2 --off --output Virtual-3 --off --output Virtual-4 --off";
         }];
         assigns = {
           ${ws_web} = [{ class = "^Nightly$"; }];
@@ -148,7 +148,6 @@
           "${modifier}+q" = "kill";
           "${modifier}+d" =
             "exec --no-startup-id rofi -modi 'window#ssh#drun' -show drun";
-          "$alt+F4" = "kill";
 
           "${modifier}+1" = "workspace ${ws_web}";
           "${modifier}+Shift+1" = "move container to workspace ${ws_web}";
